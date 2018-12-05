@@ -1,0 +1,101 @@
+<div class="app-content content">
+    <div class="content-wrapper">
+        <div class="content-wrapper-before"></div>
+        <div class="content-header row">
+            <div class="content-header-left col-md-4 col-12 mb-2">
+                <h3 class="content-header-title">Manage Student User</h3>
+            </div>
+            <div class="content-header-right col-md-8 col-12">
+                <div class="breadcrumbs-top float-md-right">
+                    <div class="breadcrumb-wrapper mr-1">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a>
+                            </li>
+                            <li class="breadcrumb-item active">Cards
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-body">
+            <section id="content-types">
+                <div class="row match-height justify-content-md-center">
+                    <div class="col-xl-6 col-md-12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <h4 class="card-title">Student User</h4>
+                                    <h6 class="card-subtitle text-muted">Add User</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form class="form" #studentForm="ngForm" (ngSubmit)=onSubmit(studentForm.value)>
+                                        <input type="hidden" name="_id">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <input type="text" class="form-control" placeholder="Department Name" name="admission_number" required>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="text" class="form-control" placeholder="Roll Number" name="roll_number" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <input type="email" class="form-control" placeholder="Email ID" required name="email_id">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input type="password" class="form-control" placeholder="Password" required name="password">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <select class="custom-select" name="departmentName" ngModel>
+                                                            <option disabled value="">Department...</option>
+                                                            <option *ngFor="let department of departments" [ngValue]="department._id">{{department.name}}</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <select class="custom-select" name="yearName" ngModel>
+                                                            <option disabled value="">Year...</option>
+                                                            <option *ngFor="let year of years" [ngValue]="year._id">{{year.name}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <select class="custom-select" name="sectionName" ngModel>
+                                                                <option disabled value="">Section...</option>
+                                                                <option *ngFor="let section of sections" [ngValue]="section._id">{{section.name}}</option>
+                                                            </select>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <select class="custom-select" name="majorName" ngModel>
+                                                                <option disabled value="">Major...</option>
+                                                                <option *ngFor="let major of majors" [ngValue]="major._id">{{major.name}}</option>
+                                                            </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions right">
+                                            <button type="submit" class="btn btn-outline-success">Send</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>

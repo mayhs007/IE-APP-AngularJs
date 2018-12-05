@@ -1,0 +1,230 @@
+<div class="app-content content">
+    <div class="content-wrapper">
+        <div class="content-wrapper-before"></div>
+        <div class="content-header row">
+            <div class="content-header-left col-md-4 col-12 mb-2">
+                <h3 class="content-header-title">Registration</h3>
+            </div>
+            <div class="content-header-right col-md-8 col-12">
+                <div class="breadcrumbs-top float-md-right">
+                    <div class="breadcrumb-wrapper mr-1">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a>
+                            </li>
+                            <li class="breadcrumb-item active">Registration
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-body">
+            <section id="content-types">
+                <div class="row match-height justify-content-md-center">
+                    <div class="col-xl-8 col-md-12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <h4 class="card-title">Registration</h4>
+                                    <h6 class="card-subtitle text-muted">Add Registration</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form class="form" [formGroup]="registrationForm" (ngSubmit)=onSubmit(registrationForm.value)>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <label for="college_name" class="sr-only">College Name</label>
+                                                    <input type="text" class="form-control" placeholder="College Name" formControlName="college_name" pattern="[a-zA-Z ]*">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="event_name" class="sr-only">College Name</label>
+                                                    <input type="text" class="form-control" placeholder="Event Name" formControlName="event_name" pattern="[a-zA-Z ]*">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <label>
+                                                            <input type="checkbox" (change)=" toggleVisibility($event)" name="workshop_only" [(ngModel)]="showWorkShopOnlyForm" [ngModelOptions]="{standalone: true}"/>
+                                                            <span>WorkShop Only</span>
+                                                        </label>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label>
+                                                            <input type="checkbox" (change)=" toggleVisibility($event)" name="event_only"  [(ngModel)]="showEventOnlyForm" [ngModelOptions]="{standalone: true}"/>
+                                                            <span>Event Only</span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label>
+                                                            <input type="checkbox" (change)=" toggleVisibility($event)" name="both_workshop_and_event"  [(ngModel)]="showBothForms" [ngModelOptions]="{standalone: true}"/>
+                                                            <span>Both</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="workshop_marked">
+                                            <hr>
+                                            <h4 class="card-title">Workshops</h4>
+                                            <div class="form-group" formArrayName="workshops" *ngFor="let workshop of registrationForm.get('workshops').controls;let i=index;">
+                                                <div class="row" [formGroupName]="i">
+                                                    <div class="col-4">
+                                                        <label for="workshop_title" class="sr-only">{{i}}</label>
+                                                        <input type="text" class="form-control" placeholder="WorkShop Title {{i+1}}" formControlName="workshop_title">
+                                                    </div>
+                                                    <div *ngIf="registrationForm.controls.workshops.controls.length === i+1">
+                                                        <div class="col-4">
+                                                            <span (click)="addWorkShopTextBox()" class="btn btn-outline-success left">Add Workshop</span>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="registrationForm.controls.workshops.controls.length > 1">
+                                                        <div class="col-4">
+                                                            <span (click)="removeWorkShopTextBox(i)" class="btn btn-outline-danger left">Remove</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        <div *ngIf="event_marked">
+                                            <hr *ngIf="event_marked && !workshop_marked">
+                                            <h4 class="card-title">Events</h4>
+                                            <div class="form-group" formArrayName="events" *ngFor="let workshop of registrationForm.get('events').controls;let j=index;">
+                                                <div class="row" [formGroupName]="j">
+                                                    <div class="col-4">
+                                                        <label for="event_title" class="sr-only">EventTitle</label>
+                                                        <input type="text" class="form-control" placeholder="Event Title {{j+1}}" formControlName="event_title">
+                                                    </div>
+                                                    <div *ngIf="registrationForm.controls.events.controls.length === j+1">
+                                                        <div class="col-4">
+                                                            <span (click)="addEventTextBox()" class="btn btn-outline-success left">Add Event</span>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="registrationForm.controls.events.controls.length > 1">
+                                                        <div class="col-4">
+                                                            <span (click)="removeEventTextBox(i)" class="btn btn-outline-danger left">Remove</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div *ngIf="!showCalendar">
+                                                        <button type="button" (click)="openCalendar()" class="btn btn-outline-success right">
+                                                                    Open Calendar
+                                                                </button>
+                                                    </div>
+                                                    <div *ngIf="showCalendar">
+                                                        <button type="button" (click)="closeCalendar()" class="btn btn-outline-danger right">
+                                                        Close Calendar
+                                                    </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div *ngIf="showCalendar">
+                                                        <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" autoclose="true" container="body">
+                                                        </ngb-datepicker>
+
+                                                        <ng-template #t let-date let-focused="focused">
+                                                            <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                                                        {{ date.day }}
+                                                      </span>
+                                                        </ng-template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-action left row ">
+                                            <div class="col ">
+                                                <span (click)="createForm() " class="btn btn-outline-danger left ">Reset</span>
+
+                                            </div>
+                                            <div class="col">
+                                                <button type="submit" class="btn btn-outline-success right ">{{this.Button}}</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Basic Tables</h4>
+                            <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                    <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                    <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                    <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body">
+                                <p class="card-text">Using the most basic table markup, here’s how <code>.table</code>-based tables look in Bootstrap. You can use any example of below table for your table and it can be use with any type of bootstrap tables. </p>
+                                <p><span class="text-bold-600">Example 1:</span> Table with outer spacing</p>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>College Name</th>
+                                                <th>Event Name</th>
+                                                <th>From Date</th>
+                                                <th>To Date</th>
+                                                <th>Workshops</th>
+                                                <th>Events</th>
+                                                <th>Update</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let registration of notApprovedRegistrations; let i = index;">
+
+                                                <th scope="row">{{i+1}}</th>
+                                                <td>{{registration.college_name}}</td>
+                                                <td>{{registration.event_name}}</td>
+                                                <td>{{registration.from_date}}</td>
+                                                <td>{{registration.to_date}}</td>
+                                                <td>
+                                                    <div *ngFor="let workshop of registration.workshops">
+                                                        {{workshop.workshop_title}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div *ngFor="let event of registration.events">
+                                                        {{event.event_title}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-outline-success">Update</button>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-outline-danger" (click)="deleteRegistration(registration._id)">Delete</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

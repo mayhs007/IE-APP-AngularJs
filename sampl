@@ -1,0 +1,19 @@
+"styles": [
+                            "src/public/css/vendors.css",
+                            "src/public/vendors/css/charts/chartist.css",
+                            "src/public/css/app-lite.css",
+                            "src/public/css/core/menu/menu-types/vertical-menu.css",
+                            "src/public/css/core/colors/palette-gradient.css",
+                            "src/public/css/pages/dashboard-ecommerce.css",
+                            "src/public/css/mycss.css"
+
+                        ],
+                        "scripts": [
+                            "src/public/New folder/js/jquery.js",
+                            "src/public/vendors/js/vendors.min.js",
+                            "src/public/js/core/materialize.min.js",
+
+                            "src/public/js/core/app-menu-lite.js",
+                            "src/public/js/core/app-lite.js"
+
+                        ]
