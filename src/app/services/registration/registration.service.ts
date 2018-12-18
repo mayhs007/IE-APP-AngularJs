@@ -21,7 +21,7 @@ export class RegistrationService {
   getNotApprovedCurrentUserRegistration(user_id: string) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.get(this.app.getUrl(this.baseUrl + `${user_id}`));
+    return this.http.get(this.app.getUrl(this.baseUrl + 'user/' + `${user_id}`));
   }
   getAllRegistration() {
     const headers = new Headers();
@@ -32,5 +32,15 @@ export class RegistrationService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.delete(this.app.getUrl(this.baseUrl + `${id}` ) ).pipe(map(res => res, {'headers': headers}));
+  }
+  getRegistration(id: String) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.get(this.app.getUrl(this.baseUrl + `${id}`)).pipe(map(res => res , {'headers': headers} ));
+  }
+  updateRegistration(registration) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.put(this.app.getUrl(this.baseUrl + 'update' ), registration).pipe(map(res => res , {'headers': headers}));
   }
 }

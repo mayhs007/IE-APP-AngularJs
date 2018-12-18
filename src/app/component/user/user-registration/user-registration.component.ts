@@ -4,6 +4,8 @@ import { FormGroup, FormControl, Validators , FormBuilder , FormArray } from '@a
 import { AuthService } from '../../../services/auth/auth.service';
 import {NgbCalendar, NgbDateStruct , NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import { TouchSequence } from 'selenium-webdriver';
+import { retry } from 'rxjs/operators';
 declare var M: any;
 @Component({
   selector: 'app-user-registration',
@@ -12,11 +14,6 @@ declare var M: any;
 })
 export class UsersRegistrationComponent implements OnInit {
   registrationForm: FormGroup;
-  workshop_marked = false;
-  event_marked = false;
-  showWorkShopOnlyForm = false;
-  showEventOnlyForm = false;
-  showBothForms = false;
   workshops: FormArray;
   events: FormArray;
   paper_presentations: FormArray;
@@ -33,6 +30,11 @@ export class UsersRegistrationComponent implements OnInit {
   hoveredDate: NgbDate;
   showCalendar = false;
   notApprovedRegistrations: any;
+  submitted = false;
+
+
+////////////////////////////////////////////////////////
+
   constructor(private register: RegistrationService, private formBuilder: FormBuilder, private authService: AuthService,
     private calendar: NgbCalendar,
     private ngbDateParserFormatter: NgbDateParserFormatter) {
@@ -45,100 +47,90 @@ export class UsersRegistrationComponent implements OnInit {
     this.getNotApprovedRegistration();
   }
   createForm() {
+    this.submitted = false;
    this.blockPastDates = new Date();
+   this.Button = 'Register';
     this.registrationForm = this.formBuilder.group({
-      user_id: this.authService.getCurrentUserId(),
-      college_name: '',
-      event_name: '',
-      workshops: this.formBuilder.array([ this.createWorkShopTextBox() ]),
-      events: this.formBuilder.array([this.createEventTextBox ()]),
-      paper_presentations: this.formBuilder.array([this.createPaperPresentationTextBox ()]),
-      from_date: this.ngbDateParserFormatter.format(this.fromDate) ,
-      to_date: this.ngbDateParserFormatter.format(this.toDate),
-      status: 'Not approved',
-      message: '',
-      file_name: ''
+      user_id: [this.authService.getCurrentUserId(), Validators.required],
+      college_name:  ['', Validators.required],
+      event_name: ['', Validators.required],
+      workshops: this.formBuilder.array([]),
+      events: this.formBuilder.array([]),
+      paper_presentations: this.formBuilder.array([]),
+      from_date: [this.ngbDateParserFormatter.format(this.fromDate), Validators.required] ,
+      to_date: [this.ngbDateParserFormatter.format(this.toDate), Validators.required],
+      status: ['Not Viewed', Validators.required],
+      message: [''],
+      file_name: ['']
     });
   }
+  get f() { return this.registrationForm.controls; }
   onSubmit(values: any) {
-  // values.from_date = date.format(values.from_date, 'dd MMM YYYY', true);
-  // values.to_date = date.format(values.to_date, 'D MMM YYY', true);
-    // const ngbDate = this.registrationForm.controls['from_date'].value;
-    // console.log(myDate);
-    // const to_date = this.ngbDateParserFormatter.format(this.toDate);
-  //  const from_date = this.ngbDateParserFormatter.format(this.fromDate);
-  //  console.log(values);
-  //  console.log(values);
-    values.from_date = this.ngbDateParserFormatter.format(this.fromDate);
-    values.to_date = this.ngbDateParserFormatter.format(this.toDate);
-      this.register.newRegister(values).subscribe((response: any) => {
-      if (response.success) {
-        M.toast({ html: response.msg, classes: 'rounded' });
-        this.getNotApprovedRegistration();
-        this.createForm();
-      } else {
-       M.toast({ html: response.msg, classes: 'rounded' });
-       this.getNotApprovedRegistration();
-       this.createForm();
-      }
-    });
-  }
-  toggleVisibility(e) {
-    switch ( e.target.name) {
-      case  'workshop_only': this.workshop_marked = e.target.checked;
-                             this.event_marked = e.target.unchecked;
-                             this.showEventOnlyForm = false;
-                             this.showBothForms = false;
-                             break;
-      case  'event_only': this.event_marked = e.target.checked;
-                          this.workshop_marked = e.target.unchecked;
-                          this.showWorkShopOnlyForm = false;
-                          this.showBothForms = false;
-                          break;
-      case  'both_workshop_and_event': this.event_marked = e.target.checked;
-                                        this.workshop_marked = e.target.checked;
-                                        this.showEventOnlyForm = false;
-                                        this.showWorkShopOnlyForm = false;
-                                        break;
+    console.log(values);
+    this.submitted = true;
+    if ( this.registrationForm.invalid) {
+      console.log(values);
+      M.toast({ html: 'Please Check the Form', classes: 'rounded' });
+    } else {
+      values.from_date = this.fromDate.day + ' ' + this.getMonth(this.fromDate.month) + ' ' + this.fromDate.year;
+      values.to_date = this.toDate.day + ' ' + this.getMonth(this.toDate.month) + ' ' + this.toDate.year;
+        this.register.newRegister(values).subscribe((response: any) => {
+        if (response.success) {
+          M.toast({ html: response.msg, classes: 'rounded' });
+          this.getNotApprovedRegistration();
+          this.createForm();
+        } else {
+         M.toast({ html: response.msg, classes: 'rounded' });
+         this.getNotApprovedRegistration();
+         this.createForm();
+        }
+      });
     }
   }
-  createWorkShopTextBox(): FormGroup {
-    return this.formBuilder.group({
-      workshop_title: ''
-    });
-  }
+
+/* Dyanmic Workshop Box */
   addWorkShopTextBox(): void {
     this.workshops = this.registrationForm.get('workshops') as FormArray;
     this.workshops.push(this.createWorkShopTextBox());
   }
+  createWorkShopTextBox(): FormGroup {
+    return this.formBuilder.group({
+      workshop_title: ['', Validators.required]
+    });
+  }
   removeWorkShopTextBox(i: number): void {
     this.workshops.removeAt(i);
   }
-
-  createEventTextBox(): FormGroup {
-    return this.formBuilder.group({
-      event_title: ''
-    });
-  }
-  addEventTextBox(): void {
+/* Dyanmic Event Box */
+ addEventTextBox(): void {
     this.events = this.registrationForm.get('events') as FormArray;
     this.events.push(this.createEventTextBox());
+  }
+  createEventTextBox(): FormGroup {
+    return this.formBuilder.group({
+      event_title: ['', Validators.required]
+    });
   }
   removeEventTextBox(i: number): void {
     this.events.removeAt(i);
   }
-  createPaperPresentationTextBox(): FormGroup {
-    return this.formBuilder.group({
-      paper_presentation_title: ''
-    });
-  }
+
+/* Dyanmic Paper Presentation  Box */
   addPaperPresentationTextBox(): void {
     this.paper_presentations = this.registrationForm.get('paper_presentations') as FormArray;
     this.paper_presentations.push(this.createPaperPresentationTextBox());
   }
+  createPaperPresentationTextBox(): FormGroup {
+    return this.formBuilder.group({
+      paper_presentation_title: ['', Validators.required]
+    });
+  }
   removePaperPresentationTextBox(i: number): void {
     this.paper_presentations.removeAt(i);
   }
+
+
+/* Date Picker Starts */
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
@@ -150,7 +142,6 @@ export class UsersRegistrationComponent implements OnInit {
     }
 
   }
-
   isHovered(date: NgbDate) {
     return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
   }
@@ -159,7 +150,6 @@ export class UsersRegistrationComponent implements OnInit {
 
     return date.after(this.fromDate) && date.before(this.toDate);
   }
-
   isRange(date: NgbDate) {
     return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
   }
@@ -169,18 +159,16 @@ export class UsersRegistrationComponent implements OnInit {
   closeCalendar() {
     this.showCalendar = false;
   }
+
+/* Date Picker Ends */
   getNotApprovedRegistration() {
      const user_id = this.authService.getCurrentUserId();
      this.register.getNotApprovedCurrentUserRegistration(user_id).subscribe((response: any) => {
       this.notApprovedRegistrations = response;
      });
-     /*
-     this.register.getAllRegistration().subscribe((response: any) => {
-      this.notApprovedRegistrations = response.docs;
-     });*/
   }
+/*Delete Registration */
   deleteRegistration(id: string) {
-   console.log('delete');
     this.register.deleteRegistration(id).subscribe((response: any) => {
       if ( response.error ) {
         M.toast({ html: response.msg , classes: 'roundeds'});
@@ -193,4 +181,22 @@ export class UsersRegistrationComponent implements OnInit {
       }
     });
     }
+/* Month to String */
+getMonth(month) {
+  switch (month) {
+    case 1: return 'Jan';
+            break;
+    case 2: return 'Feb';
+    case 3: return 'Mar';
+    case 4: return 'Apr';
+    case 5: return 'May';
+    case 6: return 'Jun';
+    case 7: return 'Jul';
+    case 8: return 'Aug';
+    case 9: return 'Sep';
+    case 10: return 'Oct';
+    case 11: return 'Nov';
+    case 12: return 'Dec';
+  }
+}
 }

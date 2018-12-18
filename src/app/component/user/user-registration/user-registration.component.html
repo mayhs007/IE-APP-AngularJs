@@ -34,95 +34,123 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <label for="college_name" class="sr-only">College Name</label>
-                                                    <input type="text" class="form-control" placeholder="College Name" formControlName="college_name" pattern="[a-zA-Z ]*">
+                                                    <input type="text" class="form-control" placeholder="College Name" formControlName="college_name" pattern="[a-zA-Z ]*" [ngClass]="{'is-invalid': submitted &&f.college_name.errors}">
+                                                    <div *ngIf="submitted && f.college_name.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.college_name.errors.required">College Name is required</div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-6">
-                                                    <label for="event_name" class="sr-only">College Name</label>
-                                                    <input type="text" class="form-control" placeholder="Event Name" formControlName="event_name" pattern="[a-zA-Z ]*">
+                                                    <label for="event_name" class="sr-only">Event Name</label>
+                                                    <input type="text" class="form-control" placeholder="Event Name" formControlName="event_name" pattern="[a-zA-Z ]*" [ngClass]="{'is-invalid': submitted &&f.event_name.errors}">
+                                                    <div *ngIf="submitted && f.event_name.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.event_name.errors.required">Event Name is required</div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <hr>
+                                        <div class="form-group">
+                                            <h4 class="card-title">Events</h4>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <span (click)="addEventTextBox()" class="btn btn-outline-success left">Add Event</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" formArrayName="events" *ngFor="let event of registrationForm.get('events').controls;let j=index;">
+                                                <div class="row" [formGroupName]="j">
+                                                    <div class="col-6">
+                                                        <label for="event_title" class="sr-only">EventTitle</label>
+                                                        <input type="text" class="form-control" placeholder="Event Title {{j+1}}" formControlName="event_title" [ngClass]="{'is-invalid': submitted && event.controls.event_title.errors}">
+                                                        <div *ngIf="submitted && event.controls.event_title.errors" class="invalid-feedback">
+                                                            <div *ngIf="event.controls.event_title.errors.required">Event Title is required</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <span (click)="removeEventTextBox(i)" class="btn btn-outline-danger left">Remove</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
                                         </div>
                                         <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-4">
-                                                    <label>
-                                                            <input type="checkbox" (change)=" toggleVisibility($event)" name="workshop_only" [(ngModel)]="showWorkShopOnlyForm" [ngModelOptions]="{standalone: true}"/>
-                                                            <span>WorkShop Only</span>
-                                                        </label>
-                                                </div>
-                                                <div class="col-4">
-                                                    <label>
-                                                            <input type="checkbox" (change)=" toggleVisibility($event)" name="event_only"  [(ngModel)]="showEventOnlyForm" [ngModelOptions]="{standalone: true}"/>
-                                                            <span>Event Only</span>
-                                                    </label>
-                                                </div>
-                                                <div class="col-4">
-                                                    <label>
-                                                            <input type="checkbox" (change)=" toggleVisibility($event)" name="both_workshop_and_event"  [(ngModel)]="showBothForms" [ngModelOptions]="{standalone: true}"/>
-                                                            <span>Both</span>
-                                                    </label>
+                                            <h4 class="card-title">Paper Presentation</h4>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <span (click)="addPaperPresentationTextBox()" class="btn btn-outline-success left">Add PaperPresentation</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div *ngIf="workshop_marked">
+                                            <div class="form-group" formArrayName="paper_presentations" *ngFor="let paper_presentation of registrationForm.get('paper_presentations').controls;let k=index;">
+                                                <div class="row" [formGroupName]="k">
+                                                    <div class="col-6">
+                                                        <label for="event_title" class="sr-only">PaperPresentation</label>
+                                                        <input type="text" class="form-control" placeholder="Paper Presentation Title {{k+1}}" formControlName="paper_presentation_title" [ngClass]="{'is-invalid': submitted && paper_presentation.controls.paper_presentation_title.errors}">
+                                                        <div *ngIf="submitted && paper_presentation.controls.paper_presentation_title.errors" class="invalid-feedback">
+                                                            <div *ngIf="paper_presentation.controls.paper_presentation_title.errors.required">Paper Presentation Title is required</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <span (click)="removePaperPresentationTextBox(i)" class="btn btn-outline-danger left">Remove</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <hr>
-                                            <h4 class="card-title">Workshops</h4>
+                                        </div>
+                                        <div class="form-group">
+                                            <h4 class="card-title">Workshop</h4>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <span (click)="addWorkShopTextBox()" class="btn btn-outline-success left">Add Workshop</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="form-group" formArrayName="workshops" *ngFor="let workshop of registrationForm.get('workshops').controls;let i=index;">
                                                 <div class="row" [formGroupName]="i">
-                                                    <div class="col-4">
+                                                    <div class="col-6">
                                                         <label for="workshop_title" class="sr-only">{{i}}</label>
-                                                        <input type="text" class="form-control" placeholder="WorkShop Title {{i+1}}" formControlName="workshop_title">
-                                                    </div>
-                                                    <div *ngIf="registrationForm.controls.workshops.controls.length === i+1">
-                                                        <div class="col-4">
-                                                            <span (click)="addWorkShopTextBox()" class="btn btn-outline-success left">Add Workshop</span>
+                                                        <input type="text" class="form-control" placeholder="WorkShop Title {{i+1}}" formControlName="workshop_title" [ngClass]="{'is-invalid': submitted && workshop.controls.workshop_title.errors}">
+                                                        <div *ngIf="submitted && workshop.controls.workshop_title.errors" class="invalid-feedback">
+                                                            <div *ngIf="workshop.controls.workshop_title.errors.required">Workshop Title is required</div>
                                                         </div>
                                                     </div>
-                                                    <div *ngIf="registrationForm.controls.workshops.controls.length > 1">
-                                                        <div class="col-4">
-                                                            <span (click)="removeWorkShopTextBox(i)" class="btn btn-outline-danger left">Remove</span>
-                                                        </div>
+                                                    <div class="col-6">
+                                                        <span (click)="removeWorkShopTextBox(i)" class="btn btn-outline-danger left">Remove</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <hr>
                                         </div>
-                                        <div *ngIf="event_marked">
-                                            <hr *ngIf="event_marked && !workshop_marked">
-                                            <h4 class="card-title">Events</h4>
-                                            <div class="form-group" formArrayName="events" *ngFor="let workshop of registrationForm.get('events').controls;let j=index;">
-                                                <div class="row" [formGroupName]="j">
-                                                    <div class="col-4">
-                                                        <label for="event_title" class="sr-only">EventTitle</label>
-                                                        <input type="text" class="form-control" placeholder="Event Title {{j+1}}" formControlName="event_title">
-                                                    </div>
-                                                    <div *ngIf="registrationForm.controls.events.controls.length === j+1">
-                                                        <div class="col-4">
-                                                            <span (click)="addEventTextBox()" class="btn btn-outline-success left">Add Event</span>
-                                                        </div>
-                                                    </div>
-                                                    <div *ngIf="registrationForm.controls.events.controls.length > 1">
-                                                        <div class="col-4">
-                                                            <span (click)="removeEventTextBox(i)" class="btn btn-outline-danger left">Remove</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                        </div>
+
+                                        <h4 class="card-title">Date Of Journey</h4>
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div *ngIf="!showCalendar">
-                                                        <button type="button" (click)="openCalendar()" class="btn btn-outline-success right">
+                                                        <button type="button" (click)="openCalendar()" class="btn btn-outline-success left">
                                                                     Open Calendar
-                                                                </button>
+                                                        </button>
                                                     </div>
                                                     <div *ngIf="showCalendar">
-                                                        <button type="button" (click)="closeCalendar()" class="btn btn-outline-danger right">
+                                                        <button type="button" (click)="closeCalendar()" class="btn btn-outline-danger left">
                                                         Close Calendar
-                                                    </button>
+                                                        </button>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <h4 class="card-title">From Date</h4>
+                                                    <input type="text" class="form-control" value="{{fromDate.day}}/{{fromDate.month}}/{{fromDate.year}}" disabled>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h4 class="card-title">To Date</h4>
+                                                    <input type="text" class="form-control" value="{{toDate.day}}/{{toDate.month}}/{{toDate.year}}" disabled>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,9 +158,8 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div *ngIf="showCalendar">
-                                                        <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" autoclose="true" container="body">
+                                                        <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" autoclose="true" container="body" [minDate]="{year:blockPastDates.getFullYear(),month:blockPastDates.getMonth()+1,day:blockPastDates.getDate()}">
                                                         </ngb-datepicker>
-
                                                         <ng-template #t let-date let-focused="focused">
                                                             <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
                                                         {{ date.day }}
@@ -162,33 +189,39 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Basic Tables</h4>
+                            <h4 class="card-title">Sent Requests</h4>
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
                                     <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
                                     <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
                                     <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                    <li><a data-action="close"><i class="ft-x"></i></a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-body">
-                                <p class="card-text">Using the most basic table markup, here’s how <code>.table</code>-based tables look in Bootstrap. You can use any example of below table for your table and it can be use with any type of bootstrap tables. </p>
-                                <p><span class="text-bold-600">Example 1:</span> Table with outer spacing</p>
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>College Name</th>
+                                                <th></th>
                                                 <th>Event Name</th>
+                                                <th></th>
                                                 <th>From Date</th>
+                                                <th></th>
                                                 <th>To Date</th>
+                                                <th></th>
                                                 <th>Workshops</th>
+                                                <th></th>
                                                 <th>Events</th>
-                                                <th>Update</th>
+                                                <th></th>
+                                                <th>Paper Presentation</th>
+                                                <th></th>
+                                                <th>Status</th>
+                                                <th></th>
                                                 <th>Delete</th>
                                             </tr>
                                         </thead>
@@ -196,22 +229,27 @@
                                             <tr *ngFor="let registration of notApprovedRegistrations; let i = index;">
 
                                                 <th scope="row">{{i+1}}</th>
-                                                <td>{{registration.college_name}}</td>
-                                                <td>{{registration.event_name}}</td>
-                                                <td>{{registration.from_date}}</td>
-                                                <td>{{registration.to_date}}</td>
-                                                <td>
+                                                <td colspan="2">{{registration.college_name.toUpperCase()}}</td>
+                                                <td colspan="2">{{registration.event_name.toUpperCase()}}</td>
+                                                <td colspan="2">{{registration.from_date.toUpperCase()}}</td>
+                                                <td colspan="2">{{registration.to_date.toUpperCase()}}</td>
+                                                <td colspan="2">
                                                     <div *ngFor="let workshop of registration.workshops">
-                                                        {{workshop.workshop_title}}
+                                                        {{workshop.workshop_title.toUpperCase()}}
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td colspan="2">
                                                     <div *ngFor="let event of registration.events">
-                                                        {{event.event_title}}
+                                                        {{event.event_title.toUpperCase()}}
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-outline-success">Update</button>
+                                                <td colspan="2">
+                                                    <div *ngFor="let paper_presentation of registration.paper_presentations ">
+                                                        {{paper_presentation.paper_presentation_title.toUpperCase()}}
+                                                    </div>
+                                                </td>
+                                                <td colspan="2">
+                                                    {{registration.status.toUpperCase()}}
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn btn-outline-danger" (click)="deleteRegistration(registration._id)">Delete</button>

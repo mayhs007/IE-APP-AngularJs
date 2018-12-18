@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DepartmentService } from '../../../../services/admin/department/department.service';
 import { FormGroup, FormBuilder, NgForm, FormControl } from '@angular/forms';
-import { variable } from '@angular/compiler/src/output/output_ast';
 import { YearService } from '../../../../services/admin/year/year.service';
 import { SectionService } from '../../../../services/admin/section/section.service';
 import { MajorService } from '../../../../services/admin/major/major.service';
@@ -59,6 +58,6 @@ export class StudentUserComponent implements OnInit {
 
   onSubmit(values: any) {
 
-      console.log('hello' + values.departmentName);  }
+  }
 
 }

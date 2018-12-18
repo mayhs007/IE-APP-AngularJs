@@ -4,7 +4,7 @@ export class Registration {
      public event_name: string;
      public workshops: Array<any>;
      public events: Array<any>;
-     public paper_presentation_title: string;
+     public paper_presentation_title: Array<any>;
      public from_date: string;
      public to_date: Date;
      public status: string;
