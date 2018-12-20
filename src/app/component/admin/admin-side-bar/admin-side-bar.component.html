@@ -15,6 +15,8 @@
             </li>
             <li class=" nav-item has-sub"><a><i class="ft-pie-chart"></i><span class="menu-title" data-i18n="">ManageClass</span></a>
                 <ul class="menu-content">
+                        <li class="menu-item"><a [routerLink]="['/admin/class']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><span class="menu-title" data-i18n="">Class</span></a>
+                        </li>
                     <li class="menu-item"><a [routerLink]="['/admin/department']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><span class="menu-title" data-i18n="">Department</span></a>
                     </li>
                     <li class=" menu-item"><a [routerLink]="['/admin/year']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><span class="menu-title" data-i18n="">Year</span></a>
@@ -31,6 +33,16 @@
                     </li>
                     <li class=" menu-item"><a [routerLink]="['/admin/students']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><span class="menu-title" data-i18n="">Students</span></a>
                     </li>
+                </ul>
+            </li>
+            <li class="nav-item has-sub"><a><i class="ft-pie-chart"></i><span class="menu-title" data-i18n="">Registration</span></a>
+                <ul class="menu-content">
+                    <div *ngFor="let department of departments">
+
+                            <li class="menu-item"><a [routerLink]="['/admin/registration',department._id]" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"><span class="menu-title" data-i18n="">{{department.name}}</span></a>
+                            </li>
+                    </div>
+                    
                 </ul>
             </li>
         </ul>

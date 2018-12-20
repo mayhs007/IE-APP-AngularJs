@@ -10,17 +10,17 @@ declare var M: any;
 })
 export class SectionComponent implements OnInit {
 
-  yearForm: FormGroup;
+  sectionForm: FormGroup;
   sections: any;
   Button: any;
-  constructor(private yearService: SectionService, private authService: AuthService, private formBuilder: FormBuilder) { }
+  constructor(private sectionService: SectionService, private authService: AuthService, private formBuilder: FormBuilder) { }
   ngOnInit() {
     this.createForm();
     this.getSections();
   }
   onSubmit(form: NgForm) {
     if ( form.value._id === '') {
-      this.yearService.createSection( this.yearForm.get('name').value ).subscribe((response: any) => {
+      this.sectionService.createSection( this.sectionForm.get('name').value ).subscribe((response: any) => {
         if ( response.error ) {
           M.toast({ html: response.msg , classes: 'roundeds'});
           this.getSections();
@@ -32,7 +32,7 @@ export class SectionComponent implements OnInit {
         }
       });
     } else {
-      this.yearService.updateSection(form.value._id, form.value.name).subscribe((response: any) => {
+      this.sectionService.updateSection(form.value._id, form.value.name).subscribe((response: any) => {
         if ( response.error ) {
           M.toast({ html: response.msg , classes: 'roundeds'});
           this.getSections();
@@ -47,20 +47,20 @@ export class SectionComponent implements OnInit {
     this.createForm();
   }
   createForm() {
-    this.yearForm = this.formBuilder.group({
+    this.sectionForm = this.formBuilder.group({
       _id: '',
       name: ''
     });
     this.Button = 'Create';
   }
   getSections() {
-    this.yearService.readSection().subscribe((response: any) => {
+    this.sectionService.readSection().subscribe((response: any) => {
      this.sections = response.docs;
     });
 
   }
   deleteSection(id: string) {
-  this.yearService.deleteSection(id).subscribe((response: any) => {
+  this.sectionService.deleteSection(id).subscribe((response: any) => {
     if ( response.error ) {
       M.toast({ html: response.msg , classes: 'roundeds'});
       this.getSections();
@@ -74,7 +74,7 @@ export class SectionComponent implements OnInit {
   }
   updateSection(id: string, name: string ) {
     this.Button = 'Update';
-    this.yearForm.setValue({
+    this.sectionForm.setValue({
       _id: id,
       name: name
     });

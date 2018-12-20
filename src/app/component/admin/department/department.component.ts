@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators , FormBuilder , FormArray, NgForm } from '@angular/forms';
 import { DepartmentService } from 'src/app/services/admin/department/department.service';
-import { Department } from '../../../model/department';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { ignoreElements } from 'rxjs/operators';
-import { ResponseContentType } from '@angular/http';
 declare var M: any;
 @Component({
   selector: 'app-department',

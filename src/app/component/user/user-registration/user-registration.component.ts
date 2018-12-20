@@ -47,7 +47,7 @@ export class UsersRegistrationComponent implements OnInit {
     this.getNotApprovedRegistration();
   }
   createForm() {
-    this.submitted = false;
+   this.submitted = false;
    this.blockPastDates = new Date();
    this.Button = 'Register';
     this.registrationForm = this.formBuilder.group({
@@ -185,7 +185,6 @@ export class UsersRegistrationComponent implements OnInit {
 getMonth(month) {
   switch (month) {
     case 1: return 'Jan';
-            break;
     case 2: return 'Feb';
     case 3: return 'Mar';
     case 4: return 'Apr';

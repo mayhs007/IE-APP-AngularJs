@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DepartmentService } from '../../../services/admin/department/department.service';
 
 @Component({
   selector: 'app-admin-side-bar',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminSideBarComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private departmentService: DepartmentService) { }
+  departments: any;
   ngOnInit() {
+    this.getDepartments();
+  }
+  getDepartments() {
+    this.departmentService.readDepartment().subscribe((response: any) => {
+     this.departments = response.docs;
+    });
+
   }
 
 }

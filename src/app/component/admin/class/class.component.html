@@ -1,0 +1,134 @@
+<div class="app-content content">
+  <div class="content-wrapper">
+      <div class="content-wrapper-before"></div>
+      <div class="content-header row">
+          <div class="content-header-left col-md-4 col-12 mb-2">
+              <h3 class="content-header-title">Manage Class</h3>
+          </div>
+          <div class="content-header-right col-md-8 col-12">
+              <div class="breadcrumbs-top float-md-right">
+                  <div class="breadcrumb-wrapper mr-1">
+                      <ol class="breadcrumb">
+                          <li class="breadcrumb-item"><a href="index.html">Home</a>
+                          </li>
+                          <li class="breadcrumb-item active">Class
+                          </li>
+                      </ol>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="content-body">
+          <section id="content-types">
+              <div class="row match-height justify-content-md-center">
+                  <div class="col-xl-6 col-md-12">
+                      <div class="card">
+                          <div class="card-content">
+                              <div class="card-body">
+                                  <h4 class="card-title">Class</h4>
+                                  <h6 class="card-subtitle text-muted">Add Class</h6>
+                              </div>
+                              <div class="card-body">
+                                  <form class="form" #classForm="ngForm" (ngSubmit)=onSubmit(classForm.value)>
+                                      <input type="hidden" name="_id">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <select class="custom-select" name="major_id" ngModel>
+                                                      <option disabled value="">Major...</option>
+                                                      <option *ngFor="let major of majors" [ngValue]="major._id">{{major.name}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <select class="custom-select" name="department_id" ngModel>
+                                                      <option disabled value="">Department...</option>
+                                                      <option *ngFor="let department of departments" [ngValue]="department._id">{{department.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <select class="custom-select" name="year_id" ngModel>
+                                                      <option disabled value="">Year...</option>
+                                                      <option *ngFor="let year of years" [ngValue]="year._id">{{year.name}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-6">
+                                                    <select class="custom-select" name="section_id" ngModel>
+                                                      <option disabled value="">Section...</option>
+                                                      <option *ngFor="let section of sections" [ngValue]="section._id">{{section.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      <div class="form-action left row">
+                                          <div class="col">
+                                              <span (click)="createForm()" class="btn btn-outline-danger left">Reset</span>
+
+                                          </div>
+                                          <div class="col">
+                                              <button type="submit" class="btn btn-outline-success right" [disabled]="!classForm.valid">{{this.Button}}</button>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+          <div class="row">
+              <div class="col-12">
+                  <div class="card">
+                      <div class="card-header">
+                          <h4 class="card-title">Class Data</h4>
+                          <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                          <div class="heading-elements">
+                              <ul class="list-inline mb-0">
+                                  <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                  <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                  <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                              </ul>
+                          </div>
+                      </div>
+                      <div class="card-content collapse show">
+                          <div class="card-body">
+                              <div class="table-responsive">
+                                  <table class="table">
+                                      <thead>
+                                          <tr>
+                                              <th>#</th>
+                                              <th>Major</th>
+                                              <th>Department</th>
+                                              <th>Year</th>
+                                              <th>Section</th>
+                                              <th>Delete</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                         <tr *ngFor="let class of classes; let i = index;">
+
+                                              <th scope="row">{{i+1}}</th>
+                                              <td>{{class.major_id.name}}</td>
+                                              <td>{{class.department_id.name}}</td>
+                                              <td>{{class.year_id.name}}</td>
+                                              <td>{{class.section_id.name}}</td>
+                                              <td>
+                                                  <div class="fonticon-wrap icon-shadow icon-shadow-danger" (click)="deleteClass(class._id)">
+                                                      <a> <i class="la la-trash la-2x"></i></a>
+                                                  </div>
+                                              </td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

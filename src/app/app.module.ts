@@ -41,6 +41,8 @@ import { StudentUserComponent } from './component/admin/user/student-user/studen
 import { MajorComponent } from './component/admin/major/major.component';
 import { UserNavbarComponent } from './component/user/user-navbar/user-navbar.component';
 import { UserSideBarComponent } from './component/user/user-side-bar/user-side-bar.component';
+import { ClassComponent } from './component/admin/class/class.component';
+import { AdminRegistrationComponent } from './component/admin/admin-registration/admin-registration.component';
 
 
 
@@ -69,7 +71,9 @@ import { UserSideBarComponent } from './component/user/user-side-bar/user-side-b
     StudentUserComponent,
     MajorComponent,
     UserNavbarComponent,
-    UserSideBarComponent
+    UserSideBarComponent,
+    ClassComponent,
+    AdminRegistrationComponent
 
   ],
   imports: [
