@@ -32,4 +32,9 @@ export class ClassService {
     headers.append('Content-Type', 'application/json');
     return this.http.delete(this.app.getUrl(this.baseUrl + `${id}` ) ).pipe(map(res => res, {'headers': headers}));
   }
+  readAdminClass() {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.get(this.app.getUrl(this.baseUrl+ 'admin'));
+  }
 }

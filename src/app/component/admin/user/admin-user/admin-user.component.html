@@ -29,23 +29,26 @@
                                     <h6 class="card-subtitle text-muted">Add User</h6>
                                 </div>
                                 <div class="card-body">
-                                    <form class="form" #adminForm="ngForm" (ngSubmit)=onSubmit(adminForm.value)>
-                                        <input type="hidden" name="_id">
+                                    <form class="form" [formGroup]="adminUserForm" (ngSubmit)=onSubmit(adminUserForm)>
+                                        <input type="hidden" formContorlName="_id">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <input type="text" class="form-control" placeholder="Name" required name="name">
+                                                        <input type="text" class="form-control" placeholder="Name" required formControlName="name" [ngClass]="{'is-invalid': submitted &&f.name.errors}">
+                                                        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                                            <div *ngIf="f.name.errors.required">Name is required</div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        <input type="email" class="form-control" placeholder="Email ID" required name="email_id">
+                                                        <input type="email" class="form-control" placeholder="Email ID" required formControlName="email_id">
                                                     </div>
                                                     <div class="col-6">
-                                                        <input type="password" class="form-control" placeholder="Password" required name="password">
+                                                        <input type="password" class="form-control" placeholder="Password" required formControlName="password">
                                                     </div>
                                                 </div>
                                             </div>
@@ -54,9 +57,9 @@
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        <select class="custom-select" name="departmentName" ngModel>
-                                                          <option disabled value="">Department...</option>
-                                                          <option *ngFor="let department of departments" [ngValue]="department._id">{{department.name}}</option>
+                                                        <select class="custom-select" formControlName="class_id" >
+                                                          <option disabled value="">Class...</option>
+                                                          <option *ngFor="let class of classes"  [value]="class._id">{{class.department_id.name}}/{{class.major_id.name}}</option>
                                                       </select>
                                                     </div>
                                                 </div>
